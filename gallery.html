@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>معرض الصور - منظمة كشاف الوحدة المغربية</title>
+  
+  <!-- Meta Tags -->
+  <meta name="description" content="معرض الصور الرسمي لمنظمة كشاف الوحدة المغربية - استكشف لحظات مميزة من أنشطتنا الكشفية">
+  <meta name="keywords" content="معرض صور, كشافة, أنشطة كشفية, مغربية, ذكريات, فعاليات">
+  <meta name="author" content="منظمة كشاف الوحدة المغربية">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="معرض الصور - منظمة كشاف الوحدة المغربية">
+  <meta property="og:description" content="لحظات مميزة من أنشطة منظمة كشاف الوحدة المغربية">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.kashaf-alwahda.ma/gallery.html">
+  <meta property="og:image" content="https://www.kashaf-alwahda.ma/images/logo2.png">
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="images/logo2.png" type="image/png">
+  
+  <style>
+    /* Gallery Page Specific Styles */
+    .gallery-header {
+      background: linear-gradient(135deg, var(--blue), var(--blue-dark));
+      color: white;
+      padding: 40px 6%;
+      text-align: center;
+      margin-top: 80px;
+    }
+
+    .gallery-header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-weight: 900;
+    }
+
+    .gallery-header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 20px;
+    }
+
+    .back-btn {
+      background: var(--accent);
+      color: white;
+      padding: 12px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 20px;
+      font-weight: 700;
+      transition: var(--transition);
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255,122,0,0.3);
+    }
+
+    .gallery-container {
+      padding: 60px 6%;
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .gallery-photo {
+      position: relative;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      aspect-ratio: 1;
+      cursor: pointer;
+    }
+
+    .gallery-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transition);
+    }
+
+    .gallery-photo:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+
+    .gallery-photo:hover img {
+      transform: scale(1.1);
+    }
+
+    .photo-overlay {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.8));
+      padding: 20px;
+      color: white;
+      transform: translateY(100%);
+      transition: var(--transition);
+    }
+
+    .gallery-photo:hover .photo-overlay {
+      transform: translateY(0);
+    }
+
+    .photo-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .photo-date {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    /* Lightbox Modal */
+    .lightbox-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 90vh;
+      position: relative;
+    }
+
+    .lightbox-img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -40px;
+      left: -40px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .lightbox-close:hover {
+      background: var(--accent);
+      transform: scale(1.1);
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox-prev {
+      right: 20px;
+    }
+
+    .lightbox-next {
+      left: 20px;
+    }
+
+    .lightbox-nav:hover {
+      background: var(--accent);
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .lightbox-caption {
+      position: absolute;
+      bottom: -50px;
+      right: 0;
+      left: 0;
+      text-align: center;
+      color: white;
+      font-size: 16px;
+      padding: 10px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .gallery-header {
+        margin-top: 60px;
+        padding: 30px 6%;
+      }
+      
+      .gallery-header h1 {
+        font-size: 2rem;
+      }
+      
+      .lightbox-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+      
+      .lightbox-prev {
+        right: 10px;
+      }
+      
+      .lightbox-next {
+        left: 10px;
+      }
+      
+      .lightbox-close {
+        top: -30px;
+        left: -30px;
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .gallery-header h1 {
+        font-size: 1.8rem;
+      }
+      
+      .gallery-header p {
+        font-size: 1rem;
+      }
+      
+      .gallery-container {
+        padding: 40px 6%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- شاشة التحميل -->
+  <div id="loading">
+    <div class="loader"></div>
+    <p>جاري تحميل معرض الصور...</p>
+  </div>
+
+  <!-- HEADER -->
+  <header id="header" role="banner">
+    <div class="brand">
+      <img src="images/logo2.png" alt="شعار منظمة كشاف الوحدة المغربية" width="56" height="56" loading="eager">
+      <h1>منظمة كشاف الوحدة المغربية</h1>
+    </div>
+    
+    <button class="mobile-menu-btn" aria-label="فتح القائمة" aria-expanded="false" aria-controls="main-navigation">
+      <span aria-hidden="true">☰</span>
+    </button>
+    
+    <nav id="main-navigation" role="navigation" aria-label="القائمة الرئيسية">
+      <a href="index.html">الرئيسية</a>
+      <a href="index.html#about">عن المنظمة</a>
+      <a href="index.html#activities">أنشطتنا</a>
+      <a href="gallery.html" aria-current="page">معرض الصور</a>
+      <a href="index.html#leaders">القادة</a>
+      <a href="index.html#join" class="cta">انضم الآن</a>
+      <button class="theme-toggle" id="theme-toggle" title="تبديل وضع السمة بين الفاتح والداكن" aria-label="تبديل وضع السمة">
+        <span aria-hidden="true">🌙</span>
+      </button>
+    </nav>
+  </header>
+
+  <!-- Gallery Header -->
+  <section class="gallery-header">
+    <h1>معرض الصور</h1>
+    <p>لحظات مميزة من أنشطة منظمة كشاف الوحدة المغربية</p>
+    <a href="index.html" class="back-btn">← العودة إلى الرئيسية</a>
+  </section>
+
+  <!-- Gallery Container -->
+  <div class="gallery-container">
+    <div class="gallery-grid" id="galleryGrid">
+      <!-- الصور سيتم إضافتها بالجافاسكريبت -->
+    </div>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div class="lightbox-modal" id="lightboxModal" role="dialog" aria-labelledby="lightboxCaption" aria-modal="true">
+    <button class="lightbox-close" onclick="closeLightbox()" aria-label="إغلاق معرض الصور">✖</button>
+    <button class="lightbox-nav lightbox-prev" onclick="prevPhoto()" aria-label="الصورة السابقة">←</button>
+    
+    <div class="lightbox-content">
+      <img src="" alt="" class="lightbox-img" id="lightboxImg">
+      <div class="lightbox-caption" id="lightboxCaption"></div>
+    </div>
+    
+    <button class="lightbox-nav lightbox-next" onclick="nextPhoto()" aria-label="الصورة التالية">→</button>
+  </div>
+
+  <!-- Footer -->
+  <footer role="contentinfo">
+    <div class="footer-content">
+      <h3>معرض صور كشاف الوحدة المغربية</h3>
+      <p>ذاكرتنا البصرية التي توثق رحلتنا الكشفية وترسم ملامح مستقبل أفضل لأبناء الوطن.</p>
+      
+      <div class="footer-links">
+        <a href="index.html">الرئيسية</a>
+        <a href="index.html#about">عن المنظمة</a>
+        <a href="index.html#activities">أنشطتنا</a>
+        <a href="gallery.html">معرض الصور</a>
+        <a href="index.html#join">انضم إلينا</a>
+      </div>
+      
+      <div class="social-links">
+        <a href="https://www.facebook.com/kashafalwahda" class="social-link" aria-label="تابعنا على فيسبوك">📘</a>
+        <a href="https://www.instagram.com/kashafalwahda" class="social-link" aria-label="تابعنا على إنستغرام">📷</a>
+        <a href="https://twitter.com/kashafalwahda" class="social-link" aria-label="تابعنا على تويتر">🐦</a>
+        <a href="https://www.youtube.com/@kashafalwahda" class="social-link" aria-label="اشترك في قناتنا على يوتيوب">▶️</a>
+      </div>
+      
+      <div class="copyright">
+        <p>© جميع الحقوق محفوظة 2025 - منظمة كشاف الوحدة المغربية</p>
+        <p>جميع الصور محمية بحقوق النشر</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // بيانات الصور
+    const galleryPhotos = [
+      {
+        src: 'images/1.png',
+        alt: 'نشاط كشفي جماعي في الهواء الطلق',
+        title: 'نشاط كشفي 1',
+        date: 'يناير 2025',
+        description: 'نشاط كشفي ترفيهي يظهر روح التعاون بين الأعضاء'
+      },
+      {
+        src: 'images/2.png',
+        alt: 'تدريبات قيادية للكشافة',
+        title: 'نشاط كشفي 2',
+        date: 'فبراير 2025',
+        description: 'ورشة تدريبية لتنمية المهارات القيادية'
+      },
+      {
+        src: 'images/3.png',
+        alt: 'مخيم كشفي صيفي',
+        title: 'نشاط كشفي 3',
+        date: 'مارس 2025',
+        description: 'مخيم صيفي تربوي في أحضان الطبيعة'
+      },
+      {
+        src: 'images/4.png',
+        alt: 'أنشطة تطوعية مجتمعية',
+        title: 'نشاط كشفي 4',
+        date: 'أبريل 2025',
+        description: 'مشاركة في حملة تنظيف مجتمعية'
+      },
+      {
+        src: 'images/5.png',
+        alt: 'حفل توزيع الشارات',
+        title: 'نشاط كشفي 5',
+        date: 'مايو 2025',
+        description: 'حفل تكريم وتوزيع شارات التميز'
+      },
+      {
+        src: 'images/6.png',
+        alt: 'أنشطة رياضية كشفية',
+        title: 'نشاط كشفي 6',
+        date: 'يونيو 2025',
+        description: 'مسابقات رياضية لتعزيز الروح الرياضية'
+      },
+      {
+        src: 'images/7.png',
+        alt: 'ورشة فنية كشفية',
+        title: 'نشاط كشفي 7',
+        date: 'يوليو 2025',
+        description: 'ورشة عمل فنية لإطلاق الإبداع'
+      },
+      {
+        src: 'images/8.png',
+        alt: 'رحلة كشفية استكشافية',
+        title: 'نشاط كشفي 8',
+        date: 'أغسطس 2025',
+        description: 'رحلة استكشافية لتعريف الأعضاء بالطبيعة'
+      },
+      {
+        src: 'images/13.png',
+        alt: 'تدريبات الفريق',
+        title: 'ضفاف نهر أبي رقراق',
+        date: 'نوفمبر 2025',
+        description: 'تدريبات وأنشطة داخلية لتعزيز العمل الجماعي'
+      },
+      {
+        src: 'images/14.png',
+        alt: 'خرجة خلوية',
+        title: 'احتفال',
+        date: 'نوفمبر 2025',
+        description: 'خرجة خلوية إلى ضفاف نهر أبي رقراق'
+      },
+      {
+        src: 'images/15.png',
+        alt: 'خرجة خلوية جماعية',
+        title: 'احتفال',
+        date: 'نوفمبر 2025',
+        description: 'نشاط جماعي في الطبيعة لتعزيز الروح الكشفية'
+      },
+      {
+        src: 'images/16.png',
+        alt: 'أنشطة ترفيهية',
+        title: 'غابة المعمورة',
+        date: 'ماي 2024',
+        description: 'أنشطة ترفيهية وتربوية في الهواء الطلق'
+      }
+    ];
+
+    // متغيرات Lightbox
+    let currentPhotoIndex = 0;
+    const lightboxModal = document.getElementById('lightboxModal');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+
+    // تهيئة الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      // تحميل السمة المحفوظة
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.setAttribute('data-theme', savedTheme);
+        const toggleBtn = document.getElementById('theme-toggle');
+        if (toggleBtn) {
+          toggleBtn.innerHTML = savedTheme === 'dark' ? '☀️' : '🌙';
+          toggleBtn.setAttribute('aria-label', savedTheme === 'dark' ? 'تفعيل الوضع الفاتح' : 'تفعيل الوضع الداكن');
+        }
+      }
+
+      // تهيئة تبديل السمة
+      const themeToggle = document.getElementById('theme-toggle');
+      if (themeToggle) {
+        themeToggle.addEventListener('click', toggleTheme);
+      }
+
+      // تهيئة القائمة المتنقلة
+      initMobileMenu();
+      
+      // إنشاء معرض الصور
+      createGallery();
+      
+      // تهيئة Lightbox
+      initLightbox();
+    });
+
+    // تبديل السمة
+    function toggleTheme() {
+      const body = document.body;
+      const theme = body.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      body.setAttribute('data-theme', theme);
+      const toggleBtn = document.getElementById('theme-toggle');
+      toggleBtn.innerHTML = theme === 'dark' ? '☀️' : '🌙';
+      toggleBtn.setAttribute('aria-label', theme === 'dark' ? 'تفعيل الوضع الفاتح' : 'تفعيل الوضع الداكن');
+      localStorage.setItem('theme', theme);
+    }
+
+    // تهيئة القائمة المتنقلة
+    function initMobileMenu() {
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      const nav = document.querySelector('nav');
+      
+      if (mobileMenuBtn && nav) {
+        mobileMenuBtn.addEventListener('click', function() {
+          const isExpanded = this.getAttribute('aria-expanded') === 'true';
+          this.setAttribute('aria-expanded', !isExpanded);
+          nav.classList.toggle('active');
+          this.setAttribute('aria-label', 
+            nav.classList.contains('active') ? 'إغلاق القائمة' : 'فتح القائمة');
+        });
+        
+        // إغلاق القائمة عند النقر على رابط
+        document.querySelectorAll('nav a').forEach(link => {
+          link.addEventListener('click', () => {
+            nav.classList.remove('active');
+            mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            mobileMenuBtn.setAttribute('aria-label', 'فتح القائمة');
+          });
+        });
+      }
+    }
+
+    // إنشاء معرض الصور
+    function createGallery() {
+      const galleryGrid = document.getElementById('galleryGrid');
+      if (!galleryGrid) return;
+
+      galleryPhotos.forEach((photo, index) => {
+        const photoElement = document.createElement('div');
+        photoElement.className = 'gallery-photo';
+        photoElement.setAttribute('role', 'button');
+        photoElement.setAttribute('tabindex', '0');
+        photoElement.setAttribute('aria-label', `عرض ${photo.title}`);
+        
+        photoElement.innerHTML = `
+          <img src="${photo.src}" alt="${photo.alt}" loading="lazy">
+          <div class="photo-overlay">
+            <div class="photo-title">${photo.title}</div>
+            <div class="photo-date">${photo.date}</div>
+          </div>
+        `;
+        
+        photoElement.addEventListener('click', () => openLightbox(index));
+        photoElement.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            openLightbox(index);
+          }
+        });
+        
+        galleryGrid.appendChild(photoElement);
+      });
+    }
+
+    // تهيئة Lightbox
+    function initLightbox() {
+      // إغلاق Lightbox عند النقر خارج الصورة
+      lightboxModal.addEventListener('click', (e) => {
+        if (e.target === lightboxModal) {
+          closeLightbox();
+        }
+      });
+
+      // التنقل بالسهام في Lightbox
+      document.addEventListener('keydown', (e) => {
+        if (lightboxModal.style.display === 'flex') {
+          switch(e.key) {
+            case 'Escape':
+              closeLightbox();
+              break;
+            case 'ArrowRight':
+            case 'ArrowDown':
+              nextPhoto();
+              break;
+            case 'ArrowLeft':
+            case 'ArrowUp':
+              prevPhoto();
+              break;
+          }
+        }
+      });
+    }
+
+    // فتح Lightbox
+    function openLightbox(index) {
+      currentPhotoIndex = index;
+      updateLightbox();
+      lightboxModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+      
+      // تحديث aria-label للتنقل
+      document.querySelector('.lightbox-prev').setAttribute('aria-label', 'الصورة السابقة');
+      document.querySelector('.lightbox-next').setAttribute('aria-label', 'الصورة التالية');
+    }
+
+    // تحديث Lightbox
+    function updateLightbox() {
+      const photo = galleryPhotos[currentPhotoIndex];
+      lightboxImg.src = photo.src;
+      lightboxImg.alt = photo.alt;
+      lightboxCaption.textContent = `${photo.title} - ${photo.description}`;
+      lightboxCaption.id = 'lightboxCaption';
+    }
+
+    // إغلاق Lightbox
+    function closeLightbox() {
+      lightboxModal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+      
+      // إرجاع التركيز للصورة المفتوحة
+      const galleryPhotos = document.querySelectorAll('.gallery-photo');
+      if (galleryPhotos[currentPhotoIndex]) {
+        galleryPhotos[currentPhotoIndex].focus();
+      }
+    }
+
+    // الصورة التالية
+    function nextPhoto() {
+      currentPhotoIndex = (currentPhotoIndex + 1) % galleryPhotos.length;
+      updateLightbox();
+    }
+
+    // الصورة السابقة
+    function prevPhoto() {
+      currentPhotoIndex = (currentPhotoIndex - 1 + galleryPhotos.length) % galleryPhotos.length;
+      updateLightbox();
+    }
+
+    // إخفاء شاشة التحميل
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        const loading = document.getElementById('loading');
+        if (loading) {
+          loading.style.opacity = '0';
+          setTimeout(function() {
+            loading.style.display = 'none';
+          }, 500);
+        }
+      }, 500);
+    });
+
+    // تصحيح عنوان المشاركة
+    document.getElementById('share-url').value = window.location.href;
+  </script>
+</body>
+</html>
